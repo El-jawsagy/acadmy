@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                                   padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
                                   child: Text(
-                                    'Safe and Comfortable',
+                                    'Safe and Comfortableeeee',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 18,
