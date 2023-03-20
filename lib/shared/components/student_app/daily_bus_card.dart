@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uber/amer_screens/student/choose_bus.dart';
 import 'package:uber/shared/styles/colors.dart';
 
 class DailyBusCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class DailyBusCard extends StatelessWidget {
         ),
         child: MaterialButton(
             onPressed: (){
-              Navigator.pushNamedAndRemoveUntil(context, '/avail_buses', (route) => false);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseBusScreen(uniName: uniName)));
             },
           child: Row(
             children: [

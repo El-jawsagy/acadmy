@@ -3,6 +3,9 @@ import '../../shared/components/student_app/choose_bus_card.dart';
 import '../../shared/styles/colors.dart';
 
 class ChooseBusScreen extends StatelessWidget {
+  final String uniName;
+  const ChooseBusScreen({Key? key , required this.uniName});
+
 
 
   @override
@@ -57,14 +60,11 @@ class ChooseBusScreen extends StatelessWidget {
 
         body: ListView(
           children: [
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '01', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '02', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '03', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '04', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '05', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '06', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '07', cost: 17),
-            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: 'BUE', bus_no: '08', cost: 17),
+            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: uniName, bus_no: '01', cost: 17),
+            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: uniName, bus_no: '02', cost: 17),
+            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: uniName, bus_no: '03', cost: 17),
+            chooseBusCard(shh: '08', smm: '00', ehh: '08', emm: '45', s_point: 'Nasr City', e_point: uniName, bus_no: '04', cost: 17),
+
           ],
         ),
       ),

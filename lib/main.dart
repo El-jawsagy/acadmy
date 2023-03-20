@@ -14,6 +14,7 @@ import 'package:uber/ziad_screens/review.dart';
 import 'package:uber/ziad_screens/signup/verify_OTP.dart';
 import 'package:uber/welcome_screen.dart';
 import 'amer_screens/student/choose_bus.dart';
+import 'functions/Map.dart';
 import 'hussam_screens/payments_methods_1.dart';
 
 void main() async {
@@ -24,7 +25,7 @@ void main() async {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-        home: DailyBusScreen(),
+        home: MapScreen(),
 
       onGenerateRoute: (settings) {
         switch (settings.name) {
@@ -57,12 +58,15 @@ void main() async {
           case '/credit_cards':
             return MaterialPageRoute(builder: (context) => PaymentMethods2Widget());
           case '/avail_buses':
-            return MaterialPageRoute(builder: (context) => ChooseBusScreen());
+            return MaterialPageRoute(builder: (context) => ChooseBusScreen(uniName: '',));
             case '/daily_buses':
             return MaterialPageRoute(builder: (context) => DailyBusScreen());
+          case '/map':
+            return MaterialPageRoute(builder: (context) => MapScreen());
           default:
             return MaterialPageRoute(builder: (context) => NavBarWidget());
         }
       },
     ));
+
 }
