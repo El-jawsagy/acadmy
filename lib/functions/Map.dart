@@ -62,18 +62,21 @@ class _MapScreenState extends State<MapScreen> {
         children: [
           FloatingActionButton(
             heroTag: null,
+            backgroundColor: Color(0xFF040C4D),
             onPressed: _onZoomInPressed,
             child: Icon(Icons.add),
           ),
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: null,
+            backgroundColor: Color(0xFF040C4D),
             onPressed: _onZoomOutPressed,
             child: Icon(Icons.remove),
           ),
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: null,
+            backgroundColor: Color(0xFF040C4D),
             onPressed: _onCurrentLocationPressed,
             child: Icon(Icons.my_location),
           ),
