@@ -48,9 +48,14 @@ dependencies:
   cloud_firestore: ^4.4.3
   fluttertoast: ^8.0.8
   crypto: ^3.0.2
-  flutter_map: ^3.1.0
+#  open_street_map_search_and_pick: 0.0.16
+  flutter_map: ^0.13.0
   location: ^4.2.0
   latlong2: ^0.8.1
+
+
+
+
 
 
 dev_dependencies:
