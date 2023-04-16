@@ -25,7 +25,7 @@ void main() async {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-        home: MapScreen(),
+        home: NavBarWidget(),
 
       onGenerateRoute: (settings) {
         switch (settings.name) {

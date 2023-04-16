@@ -4,11 +4,9 @@ import '../../styles/colors.dart';
 
 class chooseBusCard extends StatelessWidget {
 
-  final String shh ;  // Start hour
-  final String smm;  // Start min
   final bool stime_am = true; // start time am,pm
-  final String ehh;  // End hour
-  final String emm;  // End min
+  final String tripEnd;  // End min
+  final String tripStart;  // End min
   final bool etime_am = true; // End time am,pm
   final String s_point;
   final String e_point;
@@ -17,14 +15,10 @@ class chooseBusCard extends StatelessWidget {
 
 
   const chooseBusCard({
-    required this.shh,
-    required this.smm,
-    required this.ehh,
-    required this.emm,
     required this.s_point,
     required this.e_point,
     required this.bus_no,
-    required this.cost,
+    required this.cost, required this.tripEnd, required this.tripStart,
   });
 
   @override
@@ -61,23 +55,7 @@ class chooseBusCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '$shh' ,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                ),
-                              ),
-                              Text(
-                                ' : ',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                ),
-                              ),
-                              Text(
-                                '$smm',
+                                '$tripStart' ,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
@@ -130,23 +108,7 @@ class chooseBusCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '$ehh',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                ),
-                              ),
-                              Text(
-                                ' : ',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                ),
-                              ),
-                              Text(
-                                '$emm',
+                                '$tripEnd',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,

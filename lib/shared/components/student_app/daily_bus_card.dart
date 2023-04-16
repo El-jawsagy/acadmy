@@ -31,6 +31,7 @@ class DailyBusCard extends StatelessWidget {
         child: MaterialButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseBusScreen(uniName: uniName)));
+              print(uniName);
             },
           child: Row(
             children: [

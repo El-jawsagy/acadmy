@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
 
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/destination');
+                            Navigator.pushNamed(context, '/daily_buses');
                           },
                           child: Text(''),
                         ),
