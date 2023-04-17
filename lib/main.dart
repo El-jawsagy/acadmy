@@ -16,6 +16,7 @@ import 'package:uber/welcome_screen.dart';
 import 'amer_screens/student/choose_bus.dart';
 import 'functions/Map.dart';
 import 'hussam_screens/payments_methods_1.dart';
+import 'map_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
