@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+
+
+import '../../../map_page.dart';
 import '../../styles/colors.dart';
 
 class chooseBusCard extends StatelessWidget {
@@ -12,13 +18,14 @@ class chooseBusCard extends StatelessWidget {
   final String e_point;
   final String bus_no;
   final double cost;
+  final List<LatLng> latLngList;
 
 
   const chooseBusCard({
     required this.s_point,
     required this.e_point,
     required this.bus_no,
-    required this.cost, required this.tripEnd, required this.tripStart,
+    required this.cost, required this.tripEnd, required this.tripStart, required this.latLngList,
   });
 
   @override
@@ -40,8 +47,11 @@ class chooseBusCard extends StatelessWidget {
           ],
         ),
         child: MaterialButton(
-          onPressed: (){
-            Navigator.pushNamedAndRemoveUntil(context, '/bookTrip', (route) => false);
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapPage(latLngList: latLngList,),
+            ));
           },
           child: Padding(
             padding: const EdgeInsets.all(10),
