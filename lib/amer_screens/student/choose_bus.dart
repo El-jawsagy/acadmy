@@ -158,6 +158,7 @@ class ChooseBusScreen extends StatelessWidget {
                                           bus_no: busNo,
                                           cost: 17,
                                           latLngList: latLngList,
+                                          stationNamesList: stationNames,
                                         );
                                       },
                                     );

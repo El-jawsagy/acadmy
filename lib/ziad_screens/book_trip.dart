@@ -6,7 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../shared/styles/colors.dart';
 
 class BookTripScreen extends StatefulWidget {
-  const BookTripScreen({Key? key}) : super(key: key);
+  final LatLng stationPos;
+  const BookTripScreen({Key? key, required this.stationPos}) : super(key: key);
 
 
   @override
@@ -15,7 +16,9 @@ class BookTripScreen extends StatefulWidget {
 
 class _BookTripScreenState extends State<BookTripScreen>
 {
-
+  Set<Marker> _markers = {};
+  Set<Polyline> _polylines = {};
+  late LatLng latLngPos;
   final TextEditingController _seatController = TextEditingController(text: "1");
   int _seatCount = 1;
 
@@ -60,7 +63,7 @@ class _BookTripScreenState extends State<BookTripScreen>
     currentPos = position;
 
     //latitude and longitude
-    LatLng latLngPos = LatLng(position.latitude, position.longitude);
+    latLngPos = LatLng(position.latitude, position.longitude);
 
     //change camera position while user moves
     CameraPosition cameraPosition = new CameraPosition(target: latLngPos, zoom: 14);
@@ -69,11 +72,6 @@ class _BookTripScreenState extends State<BookTripScreen>
 
 
   Future<Position> getUserCurrentLocation() async {
-    await Geolocator.requestPermission().then((value){
-    }).onError((error, stackTrace) async {
-      await Geolocator.requestPermission();
-      print("ERROR"+error.toString());
-    });
     return await Geolocator.getCurrentPosition();
   }
 
@@ -115,6 +113,8 @@ class _BookTripScreenState extends State<BookTripScreen>
               newGoogleMapController = controller;
 
               getUserCurrentLocation();
+              _addStationMarker();
+              _addPolyline();
             },
 
           ),
@@ -294,4 +294,34 @@ class _BookTripScreenState extends State<BookTripScreen>
       ),
     );
   }
+  void _addStationMarker() {
+    _markers.add(
+      Marker(
+        markerId: MarkerId('station'),
+        position: widget.stationPos,
+        infoWindow: InfoWindow(
+          title: 'Station Location',
+          snippet: 'This is the station location',
+        ),
+      ),
+    );
+    print(widget.stationPos);
+  }
+
+  void _addPolyline() {
+    _polylines.add(
+      Polyline(
+        polylineId: PolylineId('user_station'),
+        color: Colors.blue,
+        width: 3,
+        points: [
+          latLngPos, //user's current location
+          widget.stationPos, //station location passed from previous screen
+        ],
+      ),
+    );
+    print(latLngPos);
+    print(widget.stationPos);
+  }
 }
+

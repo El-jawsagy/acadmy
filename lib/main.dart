@@ -38,8 +38,6 @@ void main() async {
             return MaterialPageRoute(builder: (context) => DestinationPageWidget());
           case '/welcome':
             return MaterialPageRoute(builder: (context) => WelcomePageWidget());
-          case '/bookTrip':
-            return MaterialPageRoute(builder: (context) => BookTripScreen());
           case '/phoneLogin':
             return MaterialPageRoute(builder: (context) => PhoneOTPLoginScreen());
           case '/otpLogin':

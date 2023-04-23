@@ -19,13 +19,14 @@ class chooseBusCard extends StatelessWidget {
   final String bus_no;
   final double cost;
   final List<LatLng> latLngList;
+  final List<String> stationNamesList;
 
 
   const chooseBusCard({
     required this.s_point,
     required this.e_point,
     required this.bus_no,
-    required this.cost, required this.tripEnd, required this.tripStart, required this.latLngList,
+    required this.cost, required this.tripEnd, required this.tripStart, required this.latLngList, required this.stationNamesList,
   });
 
   @override
@@ -37,7 +38,7 @@ class chooseBusCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: loginBlue,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.grey,
               offset: Offset(2,2),
@@ -50,7 +51,7 @@ class chooseBusCard extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MapPage(latLngList: latLngList,),
+              MaterialPageRoute(builder: (context) => MapPage(latLngList: latLngList, stationNamesList: stationNamesList),
             ));
           },
           child: Padding(
@@ -66,13 +67,13 @@ class chooseBusCard extends StatelessWidget {
                             children: [
                               Text(
                                 '$tripStart' ,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 ' am',
                                 style: TextStyle(
                                     color: Colors.white,
@@ -88,17 +89,17 @@ class chooseBusCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                            // crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.circle,
                                 color: Colors.white,
                                 size: 10,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
                                 '$s_point',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
@@ -119,13 +120,13 @@ class chooseBusCard extends StatelessWidget {
                             children: [
                               Text(
                                 '$tripEnd',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 ' pm',
                                 style: TextStyle(
                                     color: Colors.white,
@@ -140,14 +141,14 @@ class chooseBusCard extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.location_on,
                                 color: Colors.white,
                                 size: 15,
                               ),
                               Text(
                                 '$e_point',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
@@ -164,36 +165,36 @@ class chooseBusCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center ,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.bus_alert_rounded,
                         color: Colors.yellowAccent,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
                         '$bus_no',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.yellowAccent,
                             fontSize: 20,
                             fontWeight: FontWeight.w500
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 70,
                       ),
                       Text(
                         '$cost',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.greenAccent,
                             fontSize: 20,
                             fontWeight: FontWeight.w500
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
-                      Text(
+                      const Text(
                         'EGP',
                         style: TextStyle(
                             color: Colors.greenAccent,

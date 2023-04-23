@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
+import 'package:uber/ziad_screens/book_trip.dart';
 
 
 const double CAMERA_ZOOM = 13;
@@ -16,7 +15,8 @@ const LatLng DEST_LOCATION = LatLng(42.6871386, -71.2143403);
 
 class MapPage extends StatefulWidget {
   final List<LatLng> latLngList;
-  const MapPage({required this.latLngList});
+  final List<String> stationNamesList;
+  const MapPage({required this.latLngList, required this.stationNamesList});
   // const MapPage({Key? key, required this.latLngList}) : super(key: key);
 
   @override
@@ -51,119 +51,13 @@ class _MapPageState extends State<MapPage> {
         markerId: MarkerId(i.toString()),
         position: widget.latLngList[i],
         infoWindow: InfoWindow(
-            title: 'HOTEL',
-            snippet: '5 Star Hotel',
+            title: widget.stationNamesList[i],
+            snippet: widget.stationNamesList[i],
             onTap: () {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Trip info'),
-                      content: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Driver name: Hazem El Tiaaaaaar',
-                            style: style1,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text('Time to station: 08:00', style: style1),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text('Time to destination: 08:00', style: style1),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text('Fare: ${(counter - i) * 2} EGP', style: style1),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 50,
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.green,
-                                  ),
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'REQUEST CONFIRMED SUCCEFULLY :( !!!!!!'),
-                                              content: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 50,
-                                                      width: double.infinity,
-                                                      decoration: const BoxDecoration(
-                                                        color: Colors.green,
-                                                      ),
-                                                      child: MaterialButton(
-                                                        onPressed: () {
-                                                          // Navigator.of(context).push(
-                                                          //     MaterialPageRoute(builder: (context) => DriverHomePage()));
-                                                        },
-                                                        child: const Center(
-                                                          child: Text(
-                                                            'OK',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          });
-                                    },
-                                    child: const Center(
-                                      child: Text(
-                                        'Confirm',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 50,
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                  ),
-                                  child: MaterialButton(
-                                    onPressed: () {},
-                                    child: const Center(
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
+                    return BookTripScreen(stationPos: widget.latLngList[i]);
                   });
             }),
         icon: BitmapDescriptor.defaultMarker,
