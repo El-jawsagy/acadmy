@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:collection';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:location/location.dart';
 import 'package:uber/ziad_screens/book_trip.dart';
-
 
 const double CAMERA_ZOOM = 13;
 const double CAMERA_TILT = 0;
@@ -16,7 +14,13 @@ const LatLng DEST_LOCATION = LatLng(42.6871386, -71.2143403);
 class MapPage extends StatefulWidget {
   final List<LatLng> latLngList;
   final List<String> stationNamesList;
-  const MapPage({required this.latLngList, required this.stationNamesList});
+  final DocumentReference busRef;
+
+  const MapPage(
+      {required this.latLngList,
+      required this.busRef,
+      required this.stationNamesList});
+
   // const MapPage({Key? key, required this.latLngList}) : super(key: key);
 
   @override
@@ -25,6 +29,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   Completer<GoogleMapController> _controller = Completer();
+
   //on below line we have set the camera position
   static const CameraPosition _kGoogle = CameraPosition(
     target: LatLng(30.06930, 31.34411),
@@ -57,7 +62,10 @@ class _MapPageState extends State<MapPage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return BookTripScreen(stationPos: widget.latLngList[i]);
+                    return BookTripScreen(
+                      stationPos: widget.latLngList[i],
+                      busRef: widget.busRef,
+                    );
                   });
             }),
         icon: BitmapDescriptor.defaultMarker,
@@ -69,7 +77,6 @@ class _MapPageState extends State<MapPage> {
         color: Colors.green,
       ));
     }
-
   }
 
   @override
@@ -101,7 +108,8 @@ class _MapPageState extends State<MapPage> {
               _controller.complete(controller);
 
               // Move camera to first marker
-              controller.moveCamera(CameraUpdate.newLatLng(widget.latLngList[0]));
+              controller
+                  .moveCamera(CameraUpdate.newLatLng(widget.latLngList[0]));
             },
           ),
         ),

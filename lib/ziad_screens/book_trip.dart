@@ -1,26 +1,40 @@
 import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import '../shared/styles/colors.dart';
 
 class BookTripScreen extends StatefulWidget {
   final LatLng stationPos;
-  const BookTripScreen({Key? key, required this.stationPos}) : super(key: key);
+  final DocumentReference busRef;
 
+  const BookTripScreen(
+      {Key? key, required this.stationPos, required this.busRef})
+      : super(key: key);
 
   @override
   State<BookTripScreen> createState() => _BookTripScreenState();
 }
 
-class _BookTripScreenState extends State<BookTripScreen>
-{
+class _BookTripScreenState extends State<BookTripScreen> {
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
+  bool isLoading = false;
   late LatLng latLngPos;
-  final TextEditingController _seatController = TextEditingController(text: "1");
+  final TextEditingController _seatController =
+      TextEditingController(text: "1");
   int _seatCount = 1;
+
+  @override
+  void initState() {
+    _seatCount = 1;
+    isLoading = false;
+    super.initState();
+  }
 
   void _incrementSeatCount() {
     setState(() {
@@ -28,6 +42,7 @@ class _BookTripScreenState extends State<BookTripScreen>
       _seatController.text = _seatCount.toString();
     });
   }
+
   void _decrementSeatCount() {
     setState(() {
       _seatCount = (_seatCount > 1) ? _seatCount - 1 : _seatCount;
@@ -47,7 +62,7 @@ class _BookTripScreenState extends State<BookTripScreen>
   );
 
   final Completer<GoogleMapController> _controllerGoogleMap =
-  Completer<GoogleMapController>();
+      Completer<GoogleMapController>();
 
   late GoogleMapController newGoogleMapController;
 
@@ -57,24 +72,24 @@ class _BookTripScreenState extends State<BookTripScreen>
 
   double bottomPaddingOfMap = 0;
 
-  void locatePos() async
-  {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  void locatePos() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     currentPos = position;
 
     //latitude and longitude
     latLngPos = LatLng(position.latitude, position.longitude);
 
     //change camera position while user moves
-    CameraPosition cameraPosition = new CameraPosition(target: latLngPos, zoom: 14);
-    newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLngPos, zoom: 14);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
-
 
   Future<Position> getUserCurrentLocation() async {
     return await Geolocator.getCurrentPosition();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +98,15 @@ class _BookTripScreenState extends State<BookTripScreen>
           backgroundColor: loginBlue,
           elevation: 50.0,
           leading: IconButton(
-            onPressed: ()
-            {
+            onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_outlined, color: Colors.white, size: 30.0,),
-          )
-      ),
+            icon: Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.white,
+              size: 30.0,
+            ),
+          )),
       body: Stack(
         children: [
           GoogleMap(
@@ -103,8 +120,7 @@ class _BookTripScreenState extends State<BookTripScreen>
             zoomControlsEnabled: false,
 
             initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller)
-            {
+            onMapCreated: (GoogleMapController controller) {
               setState(() {
                 bottomPaddingOfMap = 300.0;
               });
@@ -116,7 +132,6 @@ class _BookTripScreenState extends State<BookTripScreen>
               _addStationMarker();
               _addPolyline();
             },
-
           ),
 
           // on pressing floating action button the camera will take to user current location
@@ -129,10 +144,13 @@ class _BookTripScreenState extends State<BookTripScreen>
               height: 334.0,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0)),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 33.0, left: 16, bottom: 24.0),
+                padding:
+                    const EdgeInsets.only(top: 33.0, left: 16, bottom: 24.0),
                 child: Column(
                   children: [
                     Container(
@@ -141,7 +159,7 @@ class _BookTripScreenState extends State<BookTripScreen>
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only( right: 8.0),
+                              padding: const EdgeInsets.only(right: 8.0),
                               child: Container(
                                 width: 190.0,
                                 height: 49.0,
@@ -151,21 +169,23 @@ class _BookTripScreenState extends State<BookTripScreen>
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 8.0,right: 10.0),
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 10.0),
                                       child: Icon(
                                         Icons.monetization_on,
                                         color: Colors.yellow,
                                       ),
                                     ),
                                     Text("Cash"),
-                                    SizedBox(width: 50.0,),
+                                    SizedBox(
+                                      width: 50.0,
+                                    ),
                                     Icon(Icons.arrow_forward_ios),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(right: 15.0),
@@ -176,13 +196,16 @@ class _BookTripScreenState extends State<BookTripScreen>
                                   color: Color(0xFFF1F1F1),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     IconButton(
                                       onPressed: _decrementSeatCount,
                                       icon: Icon(
                                         FontAwesomeIcons.minus,
-                                        color: _seatCount == 1 ? Colors.red : Color(0xFFB0B0B0),
+                                        color: _seatCount == 1
+                                            ? Colors.red
+                                            : Color(0xFFB0B0B0),
                                       ),
                                     ),
                                     Container(
@@ -196,7 +219,8 @@ class _BookTripScreenState extends State<BookTripScreen>
                                           fontSize: 16.0,
                                         ),
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                          contentPadding:
+                                              EdgeInsets.symmetric(vertical: 8),
                                           border: InputBorder.none,
                                         ),
                                       ),
@@ -205,7 +229,9 @@ class _BookTripScreenState extends State<BookTripScreen>
                                       onPressed: _incrementSeatCount,
                                       icon: Icon(
                                         FontAwesomeIcons.plus,
-                                        color: _seatCount < 2 ? Color(0xFFB0B0B0) : Colors.red,
+                                        color: _seatCount < 2
+                                            ? Color(0xFFB0B0B0)
+                                            : Colors.red,
                                       ),
                                     ),
                                   ],
@@ -217,7 +243,8 @@ class _BookTripScreenState extends State<BookTripScreen>
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 16.0, top: 24.0,bottom: 15.0),
+                      padding: const EdgeInsets.only(
+                          right: 16.0, top: 24.0, bottom: 15.0),
                       child: Container(
                         height: 48.0,
                         width: 396.0,
@@ -227,7 +254,9 @@ class _BookTripScreenState extends State<BookTripScreen>
                         ),
                         child: Row(
                           children: [
-                            SizedBox(width: 10.0,),
+                            SizedBox(
+                              width: 10.0,
+                            ),
                             Expanded(
                               child: Text(
                                 "Fare",
@@ -236,7 +265,9 @@ class _BookTripScreenState extends State<BookTripScreen>
                                 ),
                               ),
                             ),
-                            SizedBox(width: 220.0,),
+                            SizedBox(
+                              width: 220.0,
+                            ),
                             Expanded(
                               child: Text(
                                 "17 EGP",
@@ -247,7 +278,6 @@ class _BookTripScreenState extends State<BookTripScreen>
                             ),
                           ],
                         ),
-
                       ),
                     ),
                     Text(
@@ -259,41 +289,95 @@ class _BookTripScreenState extends State<BookTripScreen>
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    Spacer(flex: 1,),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 32.0, right: 32.0, bottom: 24.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(114.0),
-                          color:loginBlue,
-                        ),
-                        width: 363.0,
-                        height: 57.0,
-                        child: FloatingActionButton.extended(
-                          backgroundColor: loginBlue,
-                          onPressed: (){},
-                          label: Text(
-                            "Book",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.2,
-                                fontWeight: FontWeight.w600
-                            ),
-                          ),
-                        ),
-                      ),
+                    Spacer(
+                      flex: 1,
                     ),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: widget.busRef.get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> busSnapshot) {
+                        if (busSnapshot.hasError) {
+                          // Handle the error
+                          if (busSnapshot.error
+                              .toString()
+                              .contains('Failed assertion')) {
+                            // Handle the 'in' filter error specifically
+                            return const Text(
+                                'Error: Empty list passed to "whereIn" query');
+                          } else {
+                            return Text('Error: ${busSnapshot.error}');
+                          }
+                        }
+                        if (busSnapshot.connectionState ==
+                                ConnectionState.waiting ||
+                            isLoading) {
+                          return const CircularProgressIndicator();
+                        }
+                        if (busSnapshot.data == null ||
+                            !busSnapshot.data!.exists) {
+                          return const Text(
+                              'No seats found for this station.' // Display a message when no trips are found
+                              );
+                        }
 
+                        if (_seatCount <=
+                            int.parse(busSnapshot.data!["busCap"])) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 32.0, right: 32.0, bottom: 24.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(114.0),
+                                color: loginBlue,
+                              ),
+                              width: 363.0,
+                              height: 57.0,
+                              child: FloatingActionButton.extended(
+                                backgroundColor: loginBlue,
+                                onPressed: () {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  Map<String, dynamic> tempBusData =
+                                      busSnapshot.data!.data()
+                                          as Map<String, dynamic>;
+                                  debugPrint("tempBusData ${tempBusData}");
+                                  tempBusData["busCap"] =
+                                      (int.parse(busSnapshot.data!["busCap"]) -
+                                              _seatCount)
+                                          .toString();
+                                  widget.busRef
+                                      .update(tempBusData)
+                                      .then((value) => setState(() {
+                                            isLoading = false;
+                                          }));
+                                },
+                                label: Text(
+                                  "Book",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.2,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return Text(
+                            'No seats found for this station. ' // Display a message when no trips are found
+                            );
+                      },
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );
   }
+
   void _addStationMarker() {
     _markers.add(
       Marker(
@@ -324,4 +408,3 @@ class _BookTripScreenState extends State<BookTripScreen>
     print(widget.stationPos);
   }
 }
-
