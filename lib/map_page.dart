@@ -63,6 +63,7 @@ class _MapPageState extends State<MapPage> {
                   builder: (context) {
                     return BookTripScreen(
                       stationPos: widget.latLngList[i],
+                      stationName: widget.stationNamesList[i],
                       tripId: widget.tripId,
                     );
                   });

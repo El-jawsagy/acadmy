@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,9 +12,13 @@ import '../shared/styles/colors.dart';
 class BookTripScreen extends StatefulWidget {
   final LatLng stationPos;
   final String tripId;
+  final String stationName;
 
   const BookTripScreen(
-      {Key? key, required this.stationPos, required this.tripId})
+      {Key? key,
+      required this.stationPos,
+      required this.tripId,
+      required this.stationName})
       : super(key: key);
 
   @override
@@ -345,17 +350,40 @@ class _BookTripScreenState extends State<BookTripScreen> {
                                   Map<String, dynamic> tempBusData =
                                       trip.data() as Map<String, dynamic>;
                                   debugPrint("tempBusData ${tempBusData}");
-
+                                  User? user =
+                                      FirebaseAuth.instance.currentUser;
                                   tempBusData["seats"] =
                                       (int.parse(tempBusData["seats"]) -
                                               _seatCount)
                                           .toString();
+                                  if (tempBusData["tickets"] == null) {
+                                    tempBusData["tickets"] = [
+                                      {
+                                        "user_id": user?.uid,
+                                        "station_name": widget.stationName,
+                                        "tickets_count": _seatCount
+                                      }
+                                    ];
+                                  } else {
+                                    List tickets = tempBusData["tickets"];
+                                    tickets.add({
+                                      "user_id": user?.uid,
+                                      "station_name": widget.stationName,
+                                      "tickets_count": _seatCount
+                                    });
+                                  }
                                   trip.reference
                                       .update(tempBusData)
-                                      .then((value) => setState(() {
-                                            isLoading = false;
-                                          }));
-                                  ;
+                                      .then((value) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+
+                                    ///todo:here you navigation code
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            "/home", (route) => false);
+                                  });
                                 },
                                 label: Text(
                                   "Book",
