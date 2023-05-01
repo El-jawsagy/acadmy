@@ -10,10 +10,10 @@ import '../shared/styles/colors.dart';
 
 class BookTripScreen extends StatefulWidget {
   final LatLng stationPos;
-  final DocumentReference busRef;
+  final String tripId;
 
   const BookTripScreen(
-      {Key? key, required this.stationPos, required this.busRef})
+      {Key? key, required this.stationPos, required this.tripId})
       : super(key: key);
 
   @override
@@ -292,10 +292,12 @@ class _BookTripScreenState extends State<BookTripScreen> {
                     Spacer(
                       flex: 1,
                     ),
-                    FutureBuilder<DocumentSnapshot>(
-                      future: widget.busRef.get(),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('trip')
+                          .snapshots(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> busSnapshot) {
+                          AsyncSnapshot<QuerySnapshot> busSnapshot) {
                         if (busSnapshot.hasError) {
                           // Handle the error
                           if (busSnapshot.error
@@ -314,14 +316,16 @@ class _BookTripScreenState extends State<BookTripScreen> {
                           return const CircularProgressIndicator();
                         }
                         if (busSnapshot.data == null ||
-                            !busSnapshot.data!.exists) {
+                            !busSnapshot.data!.docs.isNotEmpty) {
                           return const Text(
                               'No seats found for this station.' // Display a message when no trips are found
                               );
                         }
+                        DocumentSnapshot trip = busSnapshot.data!.docs
+                            .where((element) => element.id == widget.tripId)
+                            .first;
 
-                        if (_seatCount <=
-                            int.parse(busSnapshot.data!["busCap"])) {
+                        if (_seatCount <= int.parse(trip["seats"])) {
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 32.0, right: 32.0, bottom: 24.0),
@@ -339,18 +343,19 @@ class _BookTripScreenState extends State<BookTripScreen> {
                                     isLoading = true;
                                   });
                                   Map<String, dynamic> tempBusData =
-                                      busSnapshot.data!.data()
-                                          as Map<String, dynamic>;
+                                      trip.data() as Map<String, dynamic>;
                                   debugPrint("tempBusData ${tempBusData}");
-                                  tempBusData["busCap"] =
-                                      (int.parse(busSnapshot.data!["busCap"]) -
+
+                                  tempBusData["seats"] =
+                                      (int.parse(tempBusData["seats"]) -
                                               _seatCount)
                                           .toString();
-                                  widget.busRef
+                                  trip.reference
                                       .update(tempBusData)
                                       .then((value) => setState(() {
                                             isLoading = false;
                                           }));
+                                  ;
                                 },
                                 label: Text(
                                   "Book",

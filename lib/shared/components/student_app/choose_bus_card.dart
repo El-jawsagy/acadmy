@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // import 'package:latlong2/latlong.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,7 +13,7 @@ class chooseBusCard extends StatelessWidget {
   final String s_point;
   final String e_point;
   final String bus_no;
-  final DocumentReference busRef;
+  final String tripId;
   final double cost;
   final List<LatLng> latLngList;
   final List<String> stationNamesList;
@@ -23,7 +22,7 @@ class chooseBusCard extends StatelessWidget {
     required this.s_point,
     required this.e_point,
     required this.bus_no,
-    required this.busRef,
+    required this.tripId,
     required this.cost,
     required this.tripEnd,
     required this.tripStart,
@@ -56,7 +55,7 @@ class chooseBusCard extends StatelessWidget {
                   builder: (context) => MapPage(
                     latLngList: latLngList,
                     stationNamesList: stationNamesList,
-                    busRef: busRef,
+                    tripId: tripId,
                   ),
                 ));
           },

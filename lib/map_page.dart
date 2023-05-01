@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uber/ziad_screens/book_trip.dart';
@@ -14,11 +13,11 @@ const LatLng DEST_LOCATION = LatLng(42.6871386, -71.2143403);
 class MapPage extends StatefulWidget {
   final List<LatLng> latLngList;
   final List<String> stationNamesList;
-  final DocumentReference busRef;
+  final String tripId;
 
   const MapPage(
       {required this.latLngList,
-      required this.busRef,
+      required this.tripId,
       required this.stationNamesList});
 
   // const MapPage({Key? key, required this.latLngList}) : super(key: key);
@@ -64,7 +63,7 @@ class _MapPageState extends State<MapPage> {
                   builder: (context) {
                     return BookTripScreen(
                       stationPos: widget.latLngList[i],
-                      busRef: widget.busRef,
+                      tripId: widget.tripId,
                     );
                   });
             }),

@@ -8,6 +8,7 @@ import '../../shared/styles/colors.dart';
 
 class ChooseBusScreen extends StatelessWidget {
   final String uniName;
+
   const ChooseBusScreen({Key? key, required this.uniName});
 
   @override
@@ -172,7 +173,8 @@ class ChooseBusScreen extends StatelessWidget {
                                                     (stationSnapshot) => LatLng(
                                                           stationSnapshot[
                                                                   'location']
-                                                              .latitude, // Retrieve latitude
+                                                              .latitude,
+                                                          // Retrieve latitude
                                                           stationSnapshot[
                                                                   'location']
                                                               .longitude, // Retrieve longitude
@@ -189,7 +191,8 @@ class ChooseBusScreen extends StatelessWidget {
                                               ? stationNames.last
                                               : 'Unknown',
                                           bus_no: busNo,
-                                          busRef: busRef,
+                                          tripId: tripsSnapshot
+                                              .data!.docs[index].id,
                                           cost: 17,
                                           latLngList: latLngList,
                                           stationNamesList: stationNames,
